@@ -62,7 +62,7 @@ public class SchoolRepository {
     	                    DB_URL, DB_USER, DB_PASSWORD
     	            );
     	            statement = connection.prepareStatement(
-    	                    "SELECT * FROM wizard WHERE id = ?;"
+    	                    "SELECT * FROM school WHERE id = ?;"
     	            );
     	            statement.setLong(1, id);
     	            resultSet = statement.executeQuery();
@@ -93,7 +93,7 @@ public class SchoolRepository {
     	                    DB_URL, DB_USER, DB_PASSWORD
     	            );
     	            statement = connection.prepareStatement(
-    	                    "SELECT * FROM wizard WHERE last_name LIKE ?;"
+    	                    "SELECT * FROM school WHERE last_name LIKE ?;"
     	            );
     	            statement.setString(1, lastName);
     	            resultSet = statement.executeQuery();
