@@ -4,13 +4,13 @@ public class School {
 
     private Long id;
     private String name;
-    private Long capacity;
+    private int capacity;
     private String country;
 
     public School() {
     }
 
-    public School(Long id, String name, Long capacity, String country) {
+    public School(Long id, String name, int capacity, String country) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
@@ -33,11 +33,11 @@ public class School {
         this.name = name;
     }
 
-    public Long getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(Long capacity) {
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 

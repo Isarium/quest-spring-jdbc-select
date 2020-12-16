@@ -1,7 +1,15 @@
 package com.wildcodeschool.wildandwizard.repository;
 
 import com.wildcodeschool.wildandwizard.entity.School;
+import com.wildcodeschool.wildandwizard.entity.Wizard;
+import com.wildcodeschool.wildandwizard.util.JdbcUtils;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SchoolRepository {
@@ -12,19 +20,101 @@ public class SchoolRepository {
 
     public List<School> findAll() {
 
-        // TODO : find all schools
-        return null;
-    }
+    	        Connection connection = null;
+    	        PreparedStatement statement = null;
+    	        ResultSet resultSet = null;
+    	        try {
+    	            connection = DriverManager.getConnection(
+    	                    DB_URL, DB_USER, DB_PASSWORD
+    	            );
+    	            statement = connection.prepareStatement(
+    	                    "SELECT * FROM school;"
+    	            );
+    	            resultSet = statement.executeQuery();
 
-    public School findById(Long id) {
+    	            List<School> schools = new ArrayList<>();
 
-        // TODO : find a school by id
-        return null;
-    }
+    	            while (resultSet.next()) {
+    	                Long id = resultSet.getLong("id");
+    	                String name = resultSet.getString("name");
+    	                int capacity= resultSet.getInt("capacity");
+    	                String country = resultSet.getString("country");
+    	                schools.add(new School(id, name, capacity, country));
+    	            }
+    	            return schools;
+    	        } catch (SQLException e) {
+    	            e.printStackTrace();
+    	        } finally {
+    	            JdbcUtils.closeResultSet(resultSet);
+    	            JdbcUtils.closeStatement(statement);
+    	            JdbcUtils.closeConnection(connection);
+    	        }
+    	        return null;
+    	    }
 
-    public List<School> findByCountry(String country) {
+    	    public School findById(Long id) {
 
-        // TODO : search schools by country
-        return null;
-    }
+    	        Connection connection = null;
+    	        PreparedStatement statement = null;
+    	        ResultSet resultSet = null;
+    	        try {
+    	            connection = DriverManager.getConnection(
+    	                    DB_URL, DB_USER, DB_PASSWORD
+    	            );
+    	            statement = connection.prepareStatement(
+    	                    "SELECT * FROM wizard WHERE id = ?;"
+    	            );
+    	            statement.setLong(1, id);
+    	            resultSet = statement.executeQuery();
+
+    	            if (resultSet.next()) {
+    	                String name = resultSet.getString("name");
+    	                int capacity = resultSet.getInt("capacity");
+    	                String country = resultSet.getString("country");
+    	                return new School(id, name, capacity, country);
+    	            }
+    	        } catch (SQLException e) {
+    	            e.printStackTrace();
+    	        } finally {
+    	            JdbcUtils.closeResultSet(resultSet);
+    	            JdbcUtils.closeStatement(statement);
+    	            JdbcUtils.closeConnection(connection);
+    	        }
+    	        return null;
+    	    }
+
+    	    public List<School> findByLastName(String lastName) {
+
+    	        Connection connection = null;
+    	        PreparedStatement statement = null;
+    	        ResultSet resultSet = null;
+    	        try {
+    	            connection = DriverManager.getConnection(
+    	                    DB_URL, DB_USER, DB_PASSWORD
+    	            );
+    	            statement = connection.prepareStatement(
+    	                    "SELECT * FROM wizard WHERE last_name LIKE ?;"
+    	            );
+    	            statement.setString(1, lastName);
+    	            resultSet = statement.executeQuery();
+
+    	            List<School> schools = new ArrayList<>();
+
+    	            while (resultSet.next()) {
+    	                Long id = resultSet.getLong("id");
+    	                String name = resultSet.getString("name");
+    	                int capacity = resultSet.getInt("capacity");
+    	                String country = resultSet.getString("country"); 
+    	                schools.add(new School(id, name, capacity, country));
+    	            }
+    	            return schools;
+    	        } catch (SQLException e) {
+    	            e.printStackTrace();
+    	        } finally {
+    	            JdbcUtils.closeResultSet(resultSet);
+    	            JdbcUtils.closeStatement(statement);
+    	            JdbcUtils.closeConnection(connection);
+    	        }
+    	        return null;
+ }
 }
